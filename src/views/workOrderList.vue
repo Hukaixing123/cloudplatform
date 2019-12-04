@@ -1,0 +1,171 @@
+<template>
+<div>
+        <div>
+        <table>
+            <!--表头 -->
+            <thead>
+                <tr>
+                    <th>
+                        单号
+                    </th>
+                    <th>
+                        工单名
+                    </th>
+                    <th>
+                        工单状态
+                    </th>
+                    <th>
+                        施工队长
+                    </th>
+                </tr>
+            </thead>
+            <!--v-for的内容 -->
+            <tbody>
+                <tr>
+                    <td>
+                        191129xxx
+                    </td>
+                    <td>
+                        江门大桥维修
+                    </td>
+                    <td>
+                        施工中
+                    </td>
+                    <td>
+                        李xx
+                    </td>
+                    <td>
+                        <a href="javascript:;">展开</a>
+                        <a href="javascript:;">编辑</a>
+                        <a href="javascript:;">删除</a>
+                        <a href="javascript:;">👉</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        191129xxx
+                    </td>
+                    <td>
+                        江门大道铺路
+                    </td>
+                    <td>
+                        审核中
+                    </td>
+                    <td>
+                        梁xx
+                    </td>
+                    <td>
+                        <a href="javascript:;">展开</a>
+                        <a href="javascript:;">编辑</a>
+                        <a href="javascript:;">删除</a>
+                        <a href="javascript:;">👉</a>
+                    </td>
+                </tr>
+                <!--展开的详细内容 -->
+                <div>
+                    <ul>
+                        <li>
+                            <span>
+                                单号
+                            </span>
+                            <span>
+                                191129xxx
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                工单名
+                            </span>
+                            <span>
+                                江门大道铺路
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                工单状态
+                            </span>
+                            <span>
+                                审核中
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                施工队长
+                            </span>
+                            <span>
+                                梁xx
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                合作单位
+                            </span>
+                            <span>
+                                中铁
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                工种
+                            </span>
+                            <span>
+                                A类
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                合同金额（元）
+                            </span>
+                            <span>
+                                100000
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div>
+            <span>
+                共{{n}}条
+            </span>
+        </div>
+        <div>
+            <!--选页 -->
+            <button>
+                <span>&lt;</span>
+            </button>
+            <ul>
+                <li>
+                    <span>1</span>
+                </li>
+                <li>
+                    <span>2</span>
+                </li>
+                <li>
+                    <span>3</span>
+                </li>
+            </ul>
+            <button>
+                <span>></span>
+            </button>
+        </div>
+    </div>
+</div>
+</template> 
+
+<script>
+name:'workOrderList'
+export default {
+    data(){
+        return{
+            n:900
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,114 @@
+<template>
+<div>
+            <!-- 新建/编辑工单 -->
+    <div>
+        <div>
+            <ul>
+                <li>
+                    <span>
+                        工单号
+                    </span>
+                    <span>
+                        未创建
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        工单名
+                    </span>
+                    <input>
+                </li>
+                <li>
+                    <span>
+                        工单状态
+                    </span>
+                    <span>
+                        未创建
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        工种
+                    </span>
+                    <label>
+                        <input type="radio">
+                        <span>A类</span>
+                    </label>
+                    <label>
+                        <input type="radio">
+                        <span>B类</span>
+                    </label>
+                    <label>
+                        <input type="radio">
+                        <span>C类</span>
+                    </label>
+                </li>
+                <li>
+                    <span>
+                        施工队长
+                    </span>
+                    <span>
+                        --未选择--
+                    </span>
+                    <ul>
+                        <li>
+                            李xx
+                        </li>
+                        <li>
+                            梁xx
+                        </li>
+                        <li>
+                            区xx
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        合作单位
+                    </span>
+                    <span>
+                        --未选择--
+                    </span>
+                    <ul>
+                        <li>
+                            自建
+                        </li>
+                        <li>
+                            中铁
+                        </li>
+                        <li>
+                            中交
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        合同金额
+                    </span>
+                    <input>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <!-- 按钮区 -->
+            <button>
+                <span>保存</span>
+            </button>
+            <button>
+                <span>取消</span>
+            </button>
+        </div>
+    </div>
+</div>
+</template>
+
+<script>
+name:'workOrderNew'
+export default {
+    
+}
+</script>
+
+<style>
+
+</style>
