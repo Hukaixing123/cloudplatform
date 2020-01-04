@@ -1,0 +1,6 @@
+export const RECEVIE_USERS = 'recevie_users'
+export const RECEVIE_WORKERLIST = 'recevie_workerlist'
+export const RECEVIE_WORKORDERLIST = 'recevie_workorderlist'
+export const RECEVIE_USER_INFO = 'receive_user_info'
+export const RECEVIE_WORKER = 'recevie_worker'
+export const RECEVIE_WORKORDER = 'RECEVIE_WORKORDER'

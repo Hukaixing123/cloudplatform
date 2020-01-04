@@ -1,6 +1,4 @@
-import axios from 'axios'/* 
-import { resolve } from 'dns'
-import { reject } from 'q' */
+import axios from 'axios'
 
 export default function ajax(url,data={},type='GET'){
     return new Promise((resolve,reject)=>{  
@@ -15,10 +13,14 @@ export default function ajax(url,data={},type='GET'){
                 dataStr = dataStr.substring(0,dataStr.lastIndexOf('&'))
                 url = url + '?' + dataStr
             }
-            promise = axios.get(url)//因为axios在get或post方法之后返回的是一个promise对象，所以后续可以进行then
+            promise = axios.get(url,{ 
+                withCredentials: true  //打开cookie
+              })//因为axios在get或post方法之后返回的是一个promise对象，所以后续可以进行then
         }else{
         //post请求函数
-            promise = axios.post(url,data)
+            promise = axios.post(url,data,{ 
+                withCredentials: true  //打开cookie
+              })
         }
         promise.then(response=>{//这是axios的then方法，即表示axios的调用如果成功，则调用promise的resolve
             resolve(response.data)//这个resolve方法是外层promise的参数调用，根据promise的规则，
@@ -39,22 +41,3 @@ export default function ajax(url,data={},type='GET'){
     })
 }
 
-
-/* 
-export default function ajax(url,data={},type='GET'){
-        if(type === 'GET'){
-        //get请求函数
-            let dataStr = ''
-            Object.keys(data).forEach(key=>{
-                dataStr += key + '=' + data[key] + '&' 
-            })m
-            if(dataStr !== ''){
-                dataStr = dataStr.substring(0,dataStr.lastIndexOf('&'))
-                url = url + '?' + dataStr
-            }
-            return axios.get(url)//因为axios在get或post方法之后返回的是一个promise对象，所以后续可以进行then
-        }else{
-        //post请求函数
-            return axios.post(url,data)
-}
-} */
