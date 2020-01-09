@@ -100,7 +100,7 @@ export default {
     data(){
         return{
             isSave:false,
-            flag:0,
+            count:0,
             isOrderCaptainSelecting:false,
             keywordCaptain:'',
             orderCaptainList:[],
@@ -122,6 +122,7 @@ export default {
             currentEdit:{},
             blankError:0,
             moneyErr:false,
+            flag:true,
         }
     },
     computed:{
@@ -161,6 +162,7 @@ export default {
             }
         },
         async updateWorkOrder(){
+            //if(!this.flag){return}
             //检查金额格式是否有误
             if(!this.isRightMoneyamount){
                 this.moneyErr = true
@@ -195,6 +197,11 @@ export default {
             }
             this.isSave = true
             this.currentEdit.orderid = this.currentEdit._id
+            //防止短时间内重复点击提交异步请求
+            this.flag = false
+            setTimeout(() => {
+                this.flag = true
+            }, 3000)
             const result = await editWorkOrder(this.currentEdit)
             if(result.code === 1){
                 alert(result.msg || '编辑失败')
@@ -313,7 +320,7 @@ export default {
             this.currentEdit =  JSON.parse(JSON.stringify(this.workOrders[this.$route.query.id]))
         },
         'currentEdit.worktype'(){
-            if(this.flag++){//只有第一次变化的时候不清零（因为第一次变化是空对象的currentEdit接收state里的对象，
+            if(this.count++){//只有第一次变化的时候不清零（因为第一次变化是空对象的currentEdit接收state里的对象，
                 this.currentEdit.ordercaptain = ''
             }
             this.resetAvailiableCaptain()

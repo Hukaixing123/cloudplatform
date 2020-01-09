@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="filtercontain">
+            <div v-show="searching"></div>
             <router-view></router-view>
             <div><span>条件筛选</span></div>
             <div class="filtersearch">
@@ -110,7 +111,7 @@
         <div class="pagecontain wolist">
             <div>
                 <span>
-                    共{{this.workOrders.length}}条,每页最多显示{{countInEachPage}}条
+                    共{{this.filResult.length}}条,每页最多显示{{countInEachPage}}条
                 </span>
             </div>
             <div>
@@ -156,12 +157,14 @@ export default {
             countShowPage:3,//显示的相邻页数
             currentKeyWord:{},//条件筛选对象
             filResult:[],//筛选后的数组
+            flag:true,
+            searching:false,
         }
     },
     computed:{
         ...mapState(['userInfo','workOrders']),
         pagesAll(){//总页数
-            return Math.ceil(this.workOrders.length/this.countInEachPage)
+            return Math.ceil(this.filResult.length/this.countInEachPage)
         },
         currentWorkOrders:function(){
             let workOrders = []
@@ -178,6 +181,7 @@ export default {
     methods:{
         ...mapActions(['remainWorkOrderList']),
         async advanceOrderState(index){
+            if(!this.flag){return}
             let c = confirm('确定要推进该工单状态？')
             if(c){
                 //检查状态是否已经到最后
@@ -190,6 +194,11 @@ export default {
                 data.orderstate = orderstate + 1
                 //action更改
                 data.orderid = this.workOrders[index]._id
+                //防止短时间内重复点击提交异步请求
+                this.flag = false
+                setTimeout(() => {
+                    this.flag = true
+                }, 3000)
                 const result = await editWorkOrder(data)
                 if(result.code === 0){
                     this.remainWorkOrderList()
@@ -251,10 +260,12 @@ export default {
             let {filResult,workTypeList,statetype} = this
             filResult = JSON.parse(JSON.stringify(this.workOrders))
             //如果user有值，需要先获取user列表，查询对应人
-           if(currentKeyWord.user){
+            if(currentKeyWord.user){
+                this.searching = true
                 const result = await getUsers()
                 if(result.code === 0){
                     //获取用户列表成功
+                    this.searching = false
                     const users = result.data
                     for(let k=0; k<users.length; k++){
                         let re = new RegExp(currentKeyWord.user,'i')
@@ -269,6 +280,7 @@ export default {
                     }
                 }else{
                     //获取用户列表失败
+                    this.searching = false
                     alert('搜索失败')
                     return
                 }
@@ -300,6 +312,7 @@ export default {
                 }
             }
             this.filResult = filResult
+            this.current = 1
             if(!filResult.length){
                 alert('找不到项目')
             } 
@@ -350,6 +363,13 @@ table,table tr th, table tr td
     border 1px black solid
     border-radius 0 0 30px 30px
     background-color rgb(86, 163, 153)
+    div:first-child
+        position absolute
+        width 100%
+        height 169px
+        background-color rgba(33, 108, 121, 0.062)
+        border-radius 0 0 30px 30px
+        z-index 50
     div.filtersearch
         height 108px
         ul:first-child

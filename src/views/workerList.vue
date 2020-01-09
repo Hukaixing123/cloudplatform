@@ -128,6 +128,7 @@ export default {
             currentEdit:-1,//当前编辑人员
             isWorkTypeSelecting:false,//工种栏的开关
             workTypeList:['A类','B类','C类'],//工种列表
+            flag:true,
         }
     },
     methods:{
@@ -182,12 +183,12 @@ export default {
             this.currentWorker[index].worktype = this.workTypeList[i]
         },
         async updateWorkerEdit(index){
+            if(!this.flag){return}
             //异步更新数据库该worker信息,需要传一个worker：{}的对象
             const worker = this.currentWorker[index]
             //检测名字是否有重复
             for(let i=0; i<this.currentWorker.length; i++){
                 let arr = Object.keys(this.currentWorker[i])
-                console.log('i')
                 for(let j in arr){
                     const keyname = arr[j]
                     if(this.currentWorker[i][keyname] === worker.workername && this.currentWorker[i]._id != worker._id){
@@ -197,7 +198,11 @@ export default {
                 }
 
             }
-            
+            //防止短时间内重复点击提交异步请求
+            this.flag = false
+            setTimeout(() => {
+                this.flag = true
+            }, 3000)
             const result = await editWorker(worker)
             if(result.code === 1){return alert(result.msg||'未知错误')}
             if(result.code === 0){

@@ -60,6 +60,18 @@ name:'workerNew'
 //import {mapState} from 'vuex'
 import {createWorker} from '../api/api'
 export default {
+    data(){
+        return{
+            workername:'',
+            sexual:0,
+            worktype:'',
+            phonenumber:'',
+            isWorkTypeSelecting:false,//工种栏的开关
+            workTypeList:['A类','B类','C类'],//工种列表
+            blankError:0,//未填信息
+            flag:true,
+        }
+    },
     computed:{
         //...mapState(['userInfo']),
         isRightNumber(){//验证手机号
@@ -77,7 +89,8 @@ export default {
             this.worktype = this.workTypeList[index]
         },
         async newWorker(){
-            const {workername,sexual,phonenumber,worktype} = this
+            const {flag,workername,sexual,phonenumber,worktype} = this
+            if(!flag){return}
             let arr = [workername,sexual,worktype,phonenumber]
             for(let i=1; i<arr.length+1; i++){
                 if(!arr[i-1]){
@@ -113,6 +126,11 @@ export default {
             }
             const c = confirm('确定要在工作人员名单新建该工作人员？')
             if(c){
+                //防止短时间内重复点击提交异步请求
+                this.flag = false
+                setTimeout(() => {
+                    this.flag = true
+                }, 3000)
                 //新建员工
                 //发起后台请求
                 const result = await createWorker(workername,sexual,worktype,phonenumber)
@@ -133,17 +151,6 @@ export default {
             }
         }
     },
-    data(){
-        return{
-            workername:'',
-            sexual:0,
-            worktype:'',
-            phonenumber:'',
-            isWorkTypeSelecting:false,//工种栏的开关
-            workTypeList:['A类','B类','C类'],//工种列表
-            blankError:0,//未填信息
-        }
-    }
 }
 </script>
 

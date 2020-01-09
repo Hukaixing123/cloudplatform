@@ -120,6 +120,7 @@ export default {
             moneyErr:false,
             blankError:0,//未填项
             isSave:false,
+            flag:true,
         }
     },
     computed:{
@@ -199,7 +200,8 @@ export default {
             }
         },
         async newWorkOrder(){
-            const {ordername,worktype,ordercaptain,cocompany,moneyamount} = this
+            const {flag,ordername,worktype,ordercaptain,cocompany,moneyamount} = this
+            if(!flag){return}
             //检查金额格式是否有误
             if(!this.isRightMoneyamount){
                 this.moneyErr = true
@@ -240,6 +242,11 @@ export default {
                     return
                 }
             }
+            //防止短时间内重复点击提交异步请求
+            this.flag = false
+            setTimeout(() => {
+                this.flag = true
+            }, 3000)
             const userid = this.userInfo._id
             const result = await createWorkOrder(userid,ordername,worktype,ordercaptain,cocompany,moneyamount)
             if(result.code === 1){

@@ -47,7 +47,8 @@ export default {
             username:'',
             password:'',
             data:{},
-            userInfo:{}
+            userInfo:{},
+            flag:true,
         }
     },
     mounted(){
@@ -55,26 +56,33 @@ export default {
     },
     methods:{
         async LogSign(){
-            if(!(this.username&&this.password)){
+            const {flag,username,password,rightUsername,rightPassword,signType} = this
+            if(!flag){return}
+            if(!(username&&password)){
                 //用户名或密码不能为空
                 alert('用户名或密码不能为空')
             }else{
-                if(!this.rightUsername){
+                if(!rightUsername){
                 //用户名格式不对
                 alert('用户名格式不对')
                 }else{
-                    if(!this.rightPassword){
+                    if(!rightPassword){
                         //密码格式不对
                     alert('密码格式不对')
                     }else{
                         //格式正确
-                        if(this.signType){
+                        //防止短时间内重复点击提交异步请求
+                        this.flag = false
+                        setTimeout(() => {
+                            this.flag = true
+                        }, 3000)
+                        if(signType){
                             //登录
-                            this.result = await login(this.username,this.password)
+                            const result = await login(username,password)
                             //保存data
-                            this.userInfo = this.result.data
+                            this.userInfo = result.data
                             this.$store.dispatch('saveUserInfo',this.userInfo)
-                            if(this.result.code===1){
+                            if(result.code===1){
                                 alert('用户名或密码不正确')
                             }else{
                                 //跳转首页
@@ -82,11 +90,11 @@ export default {
                             }
                         }else{
                             //注册
-                            this.result = await register(this.username,this.password)
+                            const result = await register(username,password)
                             //保存data
-                            this.userInfo = this.result.data
+                            this.userInfo = result.data
                             this.$store.dispatch('saveUserInfo',this.userInfo)
-                            if(this.result.code===1){
+                            if(result.code===1){
                                 alert('该用户名已被注册')
                             }else{
                                 //跳转首页
